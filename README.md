@@ -1,0 +1,3 @@
+Our project is to help all CETians to find people with similar interests like web development, robotics etc. Here, in this platform you will get information about alumnies and students with domain specific. So you could easily connect to them, seek support and learn together. 
+It is not basically like LinkedIn, there we do not know the one whom we wish to onnect will accept that. But being a platform for CET, it helps you to network with your seniors. 
+So in order to seek guidance in a specialised field you could approach them easily. There will be no trouble to find and contact people who have more experience and knowledge in those fields.
