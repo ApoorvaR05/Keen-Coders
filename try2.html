@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile</h1>
+
+    <form method="post" id="sheetdb-form">
+        Name: <input name="name" id="name"><br>
+        Qualification: <input name="qualification" id="qualification"><br>
+        Skills: <input name="skills" id="skills"><br>
+        Email: <input name="email" id="email"><br>
+        GitHub: <input name="github" id="github"><br>
+        Domain: <input name="domain" id="domain"><br>
+
+        <button type="submit">Submit</button>
+        <button type="button" id="next-btn">Go to next page</button>
+    </form>
+
+    <div id="data-container"></div>
+
+    <script>
+        document.getElementById('sheetdb-form').addEventListener("submit", function(event) {
+            event.preventDefault();
+            var name = document.getElementById('name').value;
+            var qualification = document.getElementById('qualification').value;
+            var skills = document.getElementById('skills').value;
+            var email = document.getElementById('email').value;
+            var github = document.getElementById('github').value;
+            var domain = document.getElementById('domain').value;
+
+            fetch('https://sheetdb.io/api/v1/7m5ll4z9ayy1m', {
+                method: 'POST',
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data : {
+                        'name': name,
+                        'qualification': qualification,
+                        'skills': skills,
+                        'email': email,
+                        'github': github,
+                        'domain': domain
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('Data successfully submitted!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error occurred. Please try again.');
+            });
+        });
+
+        document.getElementById('next-btn').addEventListener("click", function() {
+            const domainInput = document.getElementById('domain').value.toLowerCase(); // Get the domain input and convert it to lowercase
+
+            fetch('https://sheetdb.io/api/v1/7m5ll4z9ayy1m')
+            .then(response => response.json())
+            .then(data => {
+                const dataContainer = document.getElementById('data-container');
+                dataContainer.innerHTML = ''; // Clear previous data
+
+                // Filter data based on the domain input
+                const filteredData = data.filter(entry => entry.domain.toLowerCase() === domainInput);
+                
+                if (filteredData.length === 0) {
+                    // If no matching data found, display a message
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = 'No students found for the entered domain.';
+                    dataContainer.appendChild(paragraph);
+                } else {
+                    // Display details of students with matching domain
+                    filteredData.forEach(entry => {
+                        const paragraph = document.createElement('p');
+                        paragraph.textContent = `Name: ${entry.name}, Qualification: ${entry.qualification}, Skills: ${entry.skills}, Email: ${entry.email}, GitHub: ${entry.github}, Domain: ${entry.domain}`;
+                        dataContainer.appendChild(paragraph);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error fetching data. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
+
